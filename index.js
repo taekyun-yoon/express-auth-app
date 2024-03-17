@@ -1,3 +1,4 @@
+const cookieParser = require('cookie-parser');
 const express = require('express');
 const jwt = require('jsonwebtoken');
 
@@ -16,6 +17,7 @@ const posts = [
 ]
 
 app.use(express.json());
+app.use(cookieParser());
 
 let refreshTokens = []
 
@@ -35,6 +37,27 @@ app.post('/login', (req, res) => {
 
     res.json({ accessToken: accessToken})
 })
+
+app.get('/refresh', (req, res) => {
+    const cookies = req.cookies;
+    console.log('cookies: ', cookies);
+
+    if (!cookies?.jwt) return res.sendStatus(401);
+
+    const refreshToken = cookies.jwt;
+    if(!refreshTokens.includes(refreshToken)) {
+        return res.sendStatus(403);
+    }
+
+    jwt.verify(refreshToken, secretText, (err, user) => {
+        if(err) return res.sendStatus(403);
+        const accessToken = jwt.sign({ name: user.name }, secretText, {expiresIn: '30s' });
+        res.json({ accessToken })
+    })
+
+
+})
+
 
 app.get('/posts', authMiddleware, (req, res) => {
     res.json(posts);

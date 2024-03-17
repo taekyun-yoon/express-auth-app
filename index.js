@@ -15,14 +15,24 @@ const posts = [
     }
 ]
 
-
 app.use(express.json());
+
+let refreshTokens = []
 
 app.post('/login', (req, res) => {
     const username = req.body.username
     const user = { name: username }
     
-    const accessToken = jwt.sign(user, secretText);
+    const accessToken = jwt.sign(user, secretText, { expiresIn: '30s' });
+    const refreshToken = jwt.sign(user, secretText, { expiresIn: '1d' });
+
+    refreshTokens.push(refreshToken);
+
+    res.cookie('jwt', refreshToken, {
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000,
+    });
+
     res.json({ accessToken: accessToken})
 })
 
@@ -36,7 +46,10 @@ function authMiddleware(req, res, next) {
     if(token == null) return res.sendStatus(401);
     
     jwt.verify(token, secretText, (err, user) => {
-        if(err) return res.sendStatus(403);
+        if(err) {
+            console.log('err: ', err);
+            return res.sendStatus(403);
+        }
         req.user = user;   
         next();
     })

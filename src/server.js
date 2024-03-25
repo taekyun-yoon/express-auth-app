@@ -5,6 +5,7 @@ const User = require('./models/users.model');
 const passport = require('passport');
 const cookieSession = require('cookie-session');
 const dotenv = require("dotenv");
+const { checkAuthenticated, checkNotAuthenticated } = require('./middleware/auth');
 
 dotenv.config();
 const app = express();
@@ -58,11 +59,11 @@ app.listen(PORT, () => {
 });
 
 
-app.get('/', function(req, res, next) {
+app.get('/', checkAuthenticated, function(req, res, next) {
     res.render('index');
 })
 
-app.get('/login', function(req, res, next) {
+app.get('/login', checkNotAuthenticated,function(req, res, next) {
     res.render('login');
 });
 
@@ -83,7 +84,7 @@ app.post('/login', async (req, res, next) => {
     })(req, res, next)
 })
 
-app.get('/signup', function(req, res, next) {
+app.get('/signup', checkNotAuthenticated,function(req, res, next) {
     res.render('signup');
 });
 

@@ -1,22 +1,23 @@
 const express = require('express');
 const path = require('path');
-const { default: mongoose, Mongoose } = require('mongoose');
-const User = require('./models/users.model');
+const { default: mongoose } = require('mongoose');
 const passport = require('passport');
 const cookieSession = require('cookie-session');
 const dotenv = require("dotenv");
-const { checkAuthenticated, checkNotAuthenticated } = require('./middleware/auth');
 const config = require('config');
 const mainRouter = require('./routes/main.router');
 const usersRouter = require('./routes/users.router');
 const serverConfig = config.get('server');
 const cookieConfig = config.get('cookie');
-
 const PORT = serverConfig.port;
 
 dotenv.config();
 const app = express();
 const cookieEncryptionKey = cookieConfig.secret;
+
+const helmet =require('helmet');
+
+app.use(helmet());
 
 // cookie-session: client에서 보관
 app.use(
@@ -66,62 +67,3 @@ app.listen(PORT, () => {
 
 app.use('/', mainRouter);
 app.use('/auth', usersRouter);
-
-
-// app.get('/', checkAuthenticated, function(req, res, next) {
-//     res.render('index');
-// })
-
-// app.get('/login', checkNotAuthenticated,function(req, res, next) {
-//     res.render('login');
-// });
-
-// app.post('/login', async (req, res, next) => {
-//     passport.authenticate("local", (err, user, info) => {
-//         if (err) {
-//             return next(err);
-//         }
-
-//         if (!user) {
-//             return res.json({ msg: info });
-//         }
-
-//         req.logIn(user, function (err) {
-//             if (err) { return next(err); }
-//             res.redirect('/');
-//         })
-//     })(req, res, next)
-// })
-
-// app.get('/auth/google', passport.authenticate('google'));
-
-// app.get('/auth/google/callback', passport.authenticate('google', {
-//     successReturnToOrRedirect: '/',
-//     failureRedirect: '/login'
-// }));
-
-// app.post('/logout', function(req, res, next) {
-//     req.logout(function(err) {
-//         if(err) {
-//             return next(err);
-//         }
-//         res.redirect('/login');
-//     })
-// })
-
-
-// app.get('/signup', checkNotAuthenticated,function(req, res, next) {
-//     res.render('signup');
-// });
-
-// app.post('/signup', async (req, res, next) => {
-//     const user = new User(req.body);
-//     console.log(req.body);
-//     try{
-//         await user.save();
-//         return res.render('login');
-//     } catch (err) {
-//         return res.json({ success: false, err }); 
-//         //err code: 11000 : cause : DuplicateKey
-//     }
-// });

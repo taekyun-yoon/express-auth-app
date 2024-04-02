@@ -1,4 +1,5 @@
 const passport = require("passport");
+const User = require("../models/users.model");
 
 function postLoginUser(req, res, next) {
     passport.authenticate("local", (err, user, info) => {

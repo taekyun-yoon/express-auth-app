@@ -6,16 +6,20 @@ const passport = require('passport');
 const cookieSession = require('cookie-session');
 const dotenv = require("dotenv");
 const { checkAuthenticated, checkNotAuthenticated } = require('./middleware/auth');
+const config = require('config');
+const serverConfig = config.get('server');
+const cookieConfig = config.get('cookie');
+
+const PORT = serverConfig.port;
 
 dotenv.config();
 const app = express();
-const PORT = 3000;
-const cookieEncryptionKey = 'super-secret-key';
+const cookieEncryptionKey = cookieConfig.secret;
 
 // cookie-session: client에서 보관
 app.use(
     cookieSession({
-        maxAge: 1209600000,
+        maxAge: cookieConfig.expiresIn,
         keys: [cookieEncryptionKey]
     })
 );

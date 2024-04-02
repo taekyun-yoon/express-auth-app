@@ -1,0 +1,13 @@
+server:
+  port: 3000
+
+db:
+  type: "mongodb"
+  database: "express-auth-project"
+
+jwt:
+  expiresIn: 3600
+
+cookie:
+  expiresIn: 1209600000
+  secret: "super-secret-key"

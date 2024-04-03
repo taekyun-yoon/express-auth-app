@@ -1,5 +1,6 @@
 const passport = require("passport");
 const User = require("../models/users.model");
+const sendMail = require("../mail/mail");
 
 function postLoginUser(req, res, next) {
     passport.authenticate("local", (err, user, info) => {
@@ -23,7 +24,9 @@ async function postSignUpUser(req, res, next) {
     console.log(req.body);
     try{
         await user.save();
-        return res.render('login');
+        sendMail(user.email, user.id, 'welcome');
+        
+        return res.redirect('/login');
     } catch (err) {
         return res.json({ success: false, err }); 
         //err code: 11000 : cause : DuplicateKey

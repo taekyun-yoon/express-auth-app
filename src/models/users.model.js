@@ -17,12 +17,17 @@ const userSchema = mongoose.Schema({
         type: String,
         unique: true,
         sparse: true,
+    },
+    kakaoId: {
+        type: String,
+        unique: true,
+        sparse: true,
     }
 })
 
 
 userSchema.pre("save", function (next) {
-    let user = this;
+    let user = this;12
 
     // 비밀번호 암호화 과정
     if (user.isModified("password")) {

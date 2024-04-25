@@ -1,12 +1,21 @@
 const express = require('express');
+const router = express.Router();
 const path = require('path');
 const { default: mongoose } = require('mongoose');
 const passport = require('passport');
 const cookieSession = require('cookie-session');
 const dotenv = require("dotenv");
 const config = require('config');
+
+//router
 const mainRouter = require('./routes/main.router');
 const usersRouter = require('./routes/users.router');
+const postRouter = require('./routes/posts.router');
+// const commentsRouter = require('./routes/comments.router');
+// const profilesRouter = require('./routes/profiles.router');
+// const likRouter = require('./routes/likes.router');
+// const friendsRouter = require('./routes/friends.router');
+
 const serverConfig = config.get('server');
 const cookieConfig = config.get('cookie');
 const PORT = serverConfig.port;
@@ -16,8 +25,44 @@ const app = express();
 const cookieEncryptionKey = cookieConfig.secret;
 
 const helmet =require('helmet');
+const scriptSrcUrls = [
+    "https://stackpath.bootstrapcdn.com/",
+    "https://kit.fontawesome.com/",
+    "https://cdnjs.cloudflare.com/",
+    "https://cdn.jsdelivr.net",
+];
+const styleSrcUrls = [
+    "https://cdn.jsdelivr.net",
+    "https://kit-free.fontawesome.com/",
+    "https://stackpath.bootstrapcdn.com/",
+    "https://use.fontawesome.com/",
+    "https://cdnjs.cloudflare.com/"
+];
+const connectSrcUrls = [];
+const fontSrcUrls = [
+    "https://cdnjs.cloudflare.com/", 
+];
 
-app.use(helmet());
+const cspOptions = {
+    directives: {
+        defaultSrc: [],
+        connectSrc: ["'self'", ...connectSrcUrls],
+        scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
+        styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+        workerSrc: ["'self'", "blob:"],
+        objectSrc: [],
+        imgSrc: [
+            "'self'",
+            "blob:",
+            "data:",
+        ],
+        fontSrc: ["'self'", ...fontSrcUrls],
+    }
+};
+
+app.use(helmet({
+    contentSecurityPolicy: cspOptions,
+}));
 
 // cookie-session: client에서 보관
 app.use(
@@ -48,7 +93,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 require('./config/passport');
 
-app.use('/static', express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -67,3 +112,10 @@ app.listen(PORT, () => {
 
 app.use('/', mainRouter);
 app.use('/auth', usersRouter);
+app.use('/posts', postRouter);
+// app.use("/posts/:id/comments", commentsRouter);
+// app.use("/profile/:id", profilesRouter);
+// app.use("/friends", friendsRouter);
+// app.use(likRouter);
+
+module.exports = router

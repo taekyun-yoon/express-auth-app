@@ -8,6 +8,7 @@ const userSchema = mongoose.Schema({
         type: String,
         trim: true,
         unique: true,
+        required: true
     },
     password: {
         type: String,
@@ -22,8 +23,43 @@ const userSchema = mongoose.Schema({
         type: String,
         unique: true,
         sparse: true,
-    }
-})
+    },
+    username: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    firstName: {
+        type: String,
+        default: 'First Name'
+    },
+    lastName: {
+        type: String,
+        default: 'Last Name'
+    },
+    bio: {
+        type: String,
+        default: '데이터 없음'
+    },
+    hometown: {
+        type: String,
+        default: '데이터 없음'
+    },
+    workplace: {
+        type: String,
+        default: '데이터 없음'
+    },
+    education: {
+        type: String,
+        default: '데이터 없음'
+    },
+    contact: {
+        type: String,
+        default: '01012345678'
+    },
+    friends: [{ type: String }],
+    friendRequest: [{ type: String }]
+}, {timestamps: true })
 
 
 userSchema.pre("save", function (next) {

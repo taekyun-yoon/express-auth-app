@@ -63,9 +63,12 @@ const googleStrategyConfig = new GoogleStrategy({
         if (existingUser) {
             return done(null, existingUser);
         } else {
+            console.log(profile);
             const user = new User({
                 email: profile.emails[0].value,
-                googleId: profile.id
+                googleId: profile.id,
+                username: profile.displayName,
+                firstName: profile.name.givenName,
             });
 
             await user.save();
@@ -89,9 +92,11 @@ const kakaoStrategyConfig = new KakaoStrategy({
             if(existingUser) {
                 return done(null, existingUser);
             } else{
+                console.log(profile);
                 const user = new User();
                 user.kakaoId = profile.id;
                 user.email = profile._json.kakao_account.email;
+                user.username = profile.username;
 
                 await user.save();
                 done(null, user);

@@ -9,13 +9,13 @@ usersRouter.post('/logout', postLogOutUser);
 
 usersRouter.get('/google', passport.authenticate('google'));
 usersRouter.get('/google/callback', passport.authenticate('google', {
-    successReturnToOrRedirect: '/',
+    successReturnToOrRedirect: '/posts',
     failureRedirect: '/login'
 }));
 
 usersRouter.get('/kakao', passport.authenticate('kakao'));
 usersRouter.get('/kakao/callback', passport.authenticate('kakao', {
-    successReturnToOrRedirect: '/',
+    successReturnToOrRedirect: '/posts',
     failureRedirect: '/login'
 }));
 

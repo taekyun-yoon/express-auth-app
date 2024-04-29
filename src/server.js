@@ -118,5 +118,8 @@ app.use('/posts', postRouter);
 // app.use("/profile/:id", profilesRouter);
 // app.use("/friends", friendsRouter);
 // app.use(likRouter);
-
+app.use((err, req, res, next) => {
+    res.status(err.status || 500);
+    res.send(err.message || "Error Occurred");
+})
 module.exports = router

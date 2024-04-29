@@ -96,6 +96,7 @@ require('./config/passport');
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.json());
+//form 태그에서 값을 가져올 수 있음
 app.use(express.urlencoded({ extended: false }));
 
 //view engine setup

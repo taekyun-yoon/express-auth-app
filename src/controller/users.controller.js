@@ -14,22 +14,22 @@ function postLoginUser(req, res, next) {
 
         req.logIn(user, function (err) {
             if (err) { return next(err); }
-            res.redirect('/');
+            res.redirect('/posts');
         })
     })(req, res, next);
 }
 
 async function postSignUpUser(req, res, next) {
     const user = new User(req.body);
-    console.log(req.body);
+
+    await validateEmail(req, res, next);
     try{
         await user.save();
         sendMail(user.email, user.id, 'welcome');
         
         return res.redirect('/login');
     } catch (err) {
-        return res.json({ success: false, err }); 
-        //err code: 11000 : cause : DuplicateKey
+        return res.render('partials/validation-modal');
     }
 }
 
@@ -40,6 +40,14 @@ function postLogOutUser(req, res, next) {
         }
         res.redirect('/login');
     })
+}
+
+async function validateEmail(req, res, next) {
+    const existingUser = await User.findOne({ email: req.body.email });
+    if (existingUser) {
+        return res.status(400).render('partials/validation-modal', { validation: 'email' }); // Pass validation error to signup page
+    }
+    next();
 }
 
 module.exports = {

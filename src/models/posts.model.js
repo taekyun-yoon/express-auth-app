@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
-const bcrypt = require("bcryptjs");
+const Comment = require("../models/comments.model");
 
 const postSchema = new mongoose.Schema({
     description: String,
     comments: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "comment"
+        ref: "Comment"
     }],
     author: {
         id: {

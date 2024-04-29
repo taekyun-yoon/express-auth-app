@@ -10,3 +10,15 @@
   boader-radius: 4px;
   background-color: #f5f5f5;
 }
+
+.create-post {
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  boarder-radius: 4px;
+  background-color: #f5f5f5;
+}
+
+.create-post:hover {
+  background-color: #ddd;
+}

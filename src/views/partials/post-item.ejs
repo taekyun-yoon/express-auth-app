@@ -1,0 +1,114 @@
+
+<div class="card mb-2">
+    <div class="card-body text-start">
+        <div class="d-flex align-items-center">
+            <a href="/profile/<%=post.author.id %>">
+                <h5>
+                    <%=post.author.username %>
+                </h5>
+            </a>
+            <small class="text-muted ms-auto">
+                <%=post.createdAt.toDateString() %>
+            </small>
+            <% if (currentUser && post.author.id.equals(currentUser._id)) {%>
+            <div class="dropdown">
+                <button class="no-outline" type="button" 
+data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="/assets/images/ellipsis.png" height="20px">
+                </button>
+                <div class="dropdown-menu">
+                    <a href="/posts/<%=post._id  %>/edit" 
+class="dropdown-item text-center">Edit</a>
+                    <form class="dropdown-item text-center" 
+action="/posts/<%= post._id  %>?_method=DELETE" method="POST">
+                        <button type="submit" class="no-outline">Delete</button>
+                    </form>
+                </div>
+            </div>
+            <% } %>
+        </div>
+
+        <p class="card-text mt-2">
+            <%= post.description %>
+        </p>
+
+        <% if(post.image) {%>
+        <img class="w-100" src="http://localhost:3000/assets/images/<%= post.image %>" />
+        <% } %>
+
+        <hr class="mb-1">
+        <div class="d-flex justify-content-between ">
+            <div class="row">
+                <form action="/posts/<%=post._id%>/like?_method=PUT" method="POST">
+                    <% if (post.likes.find(event=> event === currentUser._id.toString())){ %>
+                    <button type="submit" class="no-outline" type="button">
+                        <img src="/assets/images/heart-1.png" height="20px"><span class="ms-1">
+                            <%=post.likes.length %>
+                        </span>
+                    </button>
+                    <% } else{ %>
+                    <button type="submit" class="no-outline" type="button">
+                        <img src="/assets/images/heart.png" height="20px">
+                        <span class="ms-1">
+                            <%=post.likes.length %>
+                        </span>
+                    </button>
+                    <% } %>
+                </form>
+            </div>
+
+            <a class="ms-auto pe-2" data-bs-toggle="collapse" href="#post<%=post._id %>">
+                댓글 <%=post.comments.length %>
+            </a>
+        </div>
+        <hr class="mt-1">
+        <div class="collapse show" id="post<%=post._id%>">
+            <% if (post.comments.length > 0){ %>
+            <div class="card-body comment-section">
+                <% post.comments.forEach((comment)=>{ %>
+                <div class="d-flex justify-content-between">
+                    <div class="font-weight-bold ">
+                        <%=comment.author.username %>
+                    </div>
+                    <small class="text-secondary">
+                        <%=comment.createdAt.toDateString() %>
+                    </small>
+                </div>
+                <div class="d-flex justify-content-between mt-2">
+                    <p>
+                        <%=comment.text %>
+                    </p>
+                    <% if (currentUser && comment.author.id.equals(currentUser._id)) {%>
+                    <div class="dropdown">
+                        <button class="no-outline" type="button" data-bs-toggle="dropdown">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+                                <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+                            </svg>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="/posts/<%=post._id%>/comments/<%=comment._id %>/edit" 
+class="dropdown-item text-center">Edit</a>
+                            <form class="dropdown-item text-center" 
+action="/posts/<%=post._id%>/comments/<%=comment._id %>?_method=DELETE" method="POST">
+                                <button type="submit" class="no-outline">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                    <% }%>
+                </div>
+                <% }) %>
+            </div>
+            <% } %>
+        </div>
+        <div>
+            <form method="POST" action="/posts/<%= post._id %>/comments ">
+                <div class="form-group">
+                    <input name="text" id="desc" class="comment-section" 
+placeholder="댓글을 작성해주세요." required>
+                    <p class="small ms-2">엔터를 눌러주세요.</p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

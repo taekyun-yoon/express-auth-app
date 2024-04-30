@@ -1,13 +1,10 @@
 const express = require('express');
-const postRouter = express.Router();
-const passport = require('passport');
-const Post = require("../models/posts.model");
-const { checkNotAuthenticated, checkAuthenticated } = require('../middleware/auth');
 const multer = require('multer');
+const { checkAuthenticated, checkPostOwnerShip } = require('../middleware/auth');
+const Comment = require('../models/comments.model');
+const postRouter = express.Router();
+const Post = require('../models/posts.model');
 const path = require('path');
-const Comment = require("../models/comments.model");
-
-
 
 const storageEngin = multer.diskStorage({
     destination: (req, file, callback) => {
@@ -28,7 +25,6 @@ postRouter.get('/', checkAuthenticated, function(req, res, next) {
         .then(posts =>{
                 res.render('posts', {
                     posts: posts,
-                    currentUser: req.user
                 });
         }) 
         .catch(err => {
@@ -49,13 +45,14 @@ postRouter.post('/', checkAuthenticated, upload, async (req, res, next) => {
                 username: req.user.username
             }
         });
-        console.log('desc: ' + desc);
-        res.redirect("back");
+        req.flash('success', '포스트 생성 성공');
+        res.redirect("/posts");
     } catch (error) {
         console.error("Error creating post:", error);
-        next(error);
+        req.flash('error', '포스트 생성 실패');
+        res.redirect("/posts");
+        // next(error);
     }
 });
-
 
 module.exports = postRouter;

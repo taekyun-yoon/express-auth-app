@@ -5,9 +5,9 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  boarder: 1px solid lightgray;
-  boader-radius: 4px;
+  transform: translate(-50%, -50%); 
+  border: 1px solid lightgray;
+  border-radius: 4px;
   background-color: #f5f5f5;
 }
 
@@ -15,10 +15,24 @@
   border: none;
   padding: 10px 20px;
   cursor: pointer;
-  boarder-radius: 4px;
+  border-radius: 4px;
   background-color: #f5f5f5;
 }
 
 .create-post:hover {
   background-color: #ddd;
+}
+
+.comment-section {
+  width: 100%;
+  border: none;
+  padding: 10px 20px;
+  margin: 4px 0px;
+  border-radius: 4px;
+  background-color: #f7f7f7;
+}
+
+.no-outline {
+  background-color: transparent;
+  border-width: 0px;
 }

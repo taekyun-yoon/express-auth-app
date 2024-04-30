@@ -6,6 +6,7 @@ const passport = require('passport');
 const cookieSession = require('cookie-session');
 const dotenv = require("dotenv");
 const config = require('config');
+const flash = require("connect-flash");
 
 //router
 const mainRouter = require('./routes/main.router');
@@ -72,6 +73,7 @@ app.use(
     })
 );
 
+
 // register regenerate & save after the cookieSession middleware initialization
 // https://github.com/jaredhanson/passport/issues/907
 // passport 6.0 cookie-session 같이 사용하면 나오는 에러
@@ -93,23 +95,37 @@ app.use(passport.initialize());
 app.use(passport.session());
 require('./config/passport');
 
-app.use(express.static(path.join(__dirname, 'public')));
-
 app.use(express.json());
 //form 태그에서 값을 가져올 수 있음
 app.use(express.urlencoded({ extended: false }));
 
+app.use(flash());
 //view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 mongoose.connect(process.env.MONGO_URI)
-    .then(() => console.log('mongodb connected'))
-    .catch(err => console.log(err));
+.then(() => console.log('mongodb connected'))
+.catch(err => console.log(err));
 
-app.listen(PORT, () => {
-    console.log(`listening on ${PORT}...`);
-});
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/send', (req, res) => {
+    req.flash('post success', '포스트가 생성되었습니다.');
+    res.redirect('/receive')
+})
+
+app.get('/receive', (req, res) => {
+    res.send(req.flash('post success')[0]);
+})
+
+app.use((req, res, next) => {
+    res.locals.error = req.flash('error');
+    res.locals.success = req.flash('success');
+    res.locals.currentUser = req.user;
+    console.log(res.locals);
+    next();
+})
 
 app.use('/', mainRouter);
 app.use('/auth', usersRouter);
@@ -118,8 +134,13 @@ app.use('/posts', postRouter);
 // app.use("/profile/:id", profilesRouter);
 // app.use("/friends", friendsRouter);
 // app.use(likRouter);
+
 app.use((err, req, res, next) => {
     res.status(err.status || 500);
     res.send(err.message || "Error Occurred");
 })
+
+app.listen(PORT, () => {
+    console.log(`listening on ${PORT}...`);
+});
 module.exports = router

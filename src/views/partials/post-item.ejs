@@ -12,15 +12,12 @@
             </small>
             <% if (currentUser && post.author.id.equals(currentUser._id)) {%>
             <div class="dropdown">
-                <button class="no-outline" type="button" 
-data-bs-toggle="dropdown" aria-expanded="false">
+                <button class="no-outline" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <img src="/assets/images/ellipsis.png" height="20px">
                 </button>
                 <div class="dropdown-menu">
-                    <a href="/posts/<%=post._id  %>/edit" 
-class="dropdown-item text-center">Edit</a>
-                    <form class="dropdown-item text-center" 
-action="/posts/<%= post._id  %>?_method=DELETE" method="POST">
+                    <a href="/posts/<%=post._id  %>/edit" class="dropdown-item text-center">Edit</a>
+                    <form class="dropdown-item text-center" action="/posts/<%= post._id  %>?_method=DELETE" method="POST">
                         <button type="submit" class="no-outline">Delete</button>
                     </form>
                 </div>
@@ -42,13 +39,13 @@ action="/posts/<%= post._id  %>?_method=DELETE" method="POST">
                 <form action="/posts/<%=post._id%>/like?_method=PUT" method="POST">
                     <% if (post.likes.find(event=> event === currentUser._id.toString())){ %>
                     <button type="submit" class="no-outline" type="button">
-                        <img src="/assets/images/heart-1.png" height="20px"><span class="ms-1">
+                        <img src="/assets/images/like-1.png" height="20px"><span class="ms-1">
                             <%=post.likes.length %>
                         </span>
                     </button>
                     <% } else{ %>
                     <button type="submit" class="no-outline" type="button">
-                        <img src="/assets/images/heart.png" height="20px">
+                        <img src="/assets/images/like.png" height="20px">
                         <span class="ms-1">
                             <%=post.likes.length %>
                         </span>
@@ -86,10 +83,8 @@ action="/posts/<%= post._id  %>?_method=DELETE" method="POST">
                             </svg>
                         </button>
                         <div class="dropdown-menu">
-                            <a href="/posts/<%=post._id%>/comments/<%=comment._id %>/edit" 
-class="dropdown-item text-center">Edit</a>
-                            <form class="dropdown-item text-center" 
-action="/posts/<%=post._id%>/comments/<%=comment._id %>?_method=DELETE" method="POST">
+                            <a href="/posts/<%=post._id%>/comments/<%=comment._id %>/edit" class="dropdown-item text-center">Edit</a>
+                            <form class="dropdown-item text-center" action="/posts/<%=post._id%>/comments/<%=comment._id %>?_method=DELETE" method="POST">
                                 <button type="submit" class="no-outline">Delete</button>
                             </form>
                         </div>
@@ -103,8 +98,7 @@ action="/posts/<%=post._id%>/comments/<%=comment._id %>?_method=DELETE" method="
         <div>
             <form method="POST" action="/posts/<%= post._id %>/comments ">
                 <div class="form-group">
-                    <input name="text" id="desc" class="comment-section" 
-placeholder="댓글을 작성해주세요." required>
+                    <input name="text" id="desc" class="comment-section" placeholder="댓글을 작성해주세요." required>
                     <p class="small ms-2">엔터를 눌러주세요.</p>
                 </div>
             </form>

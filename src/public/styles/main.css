@@ -36,3 +36,19 @@
   background-color: transparent;
   border-width: 0px;
 }
+
+/* Profile Picture */
+.profile-pic{
+  display: inline-block;
+  vertical-align: middle;
+  width: 25px;
+  height: 25px;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.profile-pic img{
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}

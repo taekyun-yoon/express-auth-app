@@ -13,7 +13,7 @@
 
 <body>
 
-    <nav class="navbar navbar-dark bg-dark shadow-sm fixed-top navbar-expand-lg">
+    <nav class="navbar navbar-dark bg-dark shadow-sm fixed-top navbar-expand-lg" style="padding: 6.5px;" >
         <div class="container">
             <a class="navbar-brand">SNS</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggle">
@@ -31,23 +31,50 @@
                     </ul> 
                 <% } else { %>
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/posts">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/friends">Friends</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/profile/<%= currentUser._id %>">
-                            <%= currentUser.username %>
+                    <li class="nav-item" style="margin-right: 2px;">
+                        <a class="nav-link" href="/posts">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-house-door-fill" viewBox="0 0 16 16">
+                                <path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5"/>
+                            </svg>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <form action="/auth/logout" method="POST">
-                            <button type="submit" class="nav-link no-outline">
-                                Logout
-                            </button>
-                        </form>
+                    <li class="nav-item" style="margin-right: 2px;">
+                        <button type="button" class="nav-link btn position-relative" href="#">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-bell-fill" viewBox="0 0 16 16">
+                                <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 0A5 5 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901"/>
+                            </svg>
+                            <span class="position-absolute top-40 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem; margin-top: 10px;">
+                                99+
+                                <span class="visually-hidden">unread messages</span>
+                            </span>                            
+                        </button>                        
+                    </li>
+                    <li class="nav-item" style="margin-right: 2px;">
+                        <a class="nav-link" href="/friends">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
+                                <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
+                            </svg>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown" style="margin-right: 2px;">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+                            <!-- <%= currentUser.username %> -->
+                            <div class="profile-pic">
+                                <img src="/assets/images/KakaoTalk_Photo_2024-04-06-11-36-17.jpeg" alt="Profile Picture">
+                            </div>
+                        </a>
+                        <ul class="dropdown-menu" style="min-width: fit-content;">
+                            <li><a class="dropdown-item" href="/profile/<%= currentUser._id %>" style="padding-left: 10px;" >My Profile</a></li>
+                            <li><a class="dropdown-item" href="#"  style="padding-left: 10px;">Settings</a></li>
+                            <hr class="dropdown-divider">
+                            <li>
+                                <form action="/auth/logout" method="POST" class="dropdwon-item" style="padding-left: 10px;" >
+                                    <button type="submit" class="no-outline" style="padding-left: 0px;">
+                                        Logout
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
                 <% } %>

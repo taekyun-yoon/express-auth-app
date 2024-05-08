@@ -12,7 +12,6 @@
 </head>
 
 <body>
-
     <nav class="navbar navbar-dark bg-dark shadow-sm fixed-top navbar-expand-lg" style="padding: 6.5px;" >
         <div class="container">
             <a class="navbar-brand">SNS</a>
@@ -22,14 +21,20 @@
             <div class="collapse navbar-collapse" id="navbarToggle">
                 <% if (!currentUser) { %>
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
+                        <li class="nav-item" style="margin-right: 2px;">
                             <a class="nav-link" href="/signup">Signup</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" style="margin-right: 2px;">
                             <a class="nav-link" href="/login">Login</a>
                         </li>
                     </ul> 
                 <% } else { %>
+                <div class="form-group has-search">
+                    <form action="#" method="get">
+                        <span class="fa fa-search form-control-feedback"></span>
+                        <input type="text" class="form-control" placeholder="Search">
+                    </form>
+                </div>
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item" style="margin-right: 2px;">
                         <a class="nav-link" href="/posts">

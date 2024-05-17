@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-const User = require("../models/users.model");
-
 
 const commentSchema = new mongoose.Schema({
     text: String,

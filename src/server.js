@@ -7,6 +7,7 @@ const cookieSession = require('cookie-session');
 const dotenv = require("dotenv");
 const config = require('config');
 const flash = require("connect-flash");
+const methodOverride = require('method-override');
 
 //router
 const mainRouter = require('./routes/main.router');
@@ -109,6 +110,7 @@ mongoose.connect(process.env.MONGO_URI)
 .catch(err => console.log(err));
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(methodOverride('_method'));
 
 app.get('/send', (req, res) => {
     req.flash('post success', '포스트가 생성되었습니다.');

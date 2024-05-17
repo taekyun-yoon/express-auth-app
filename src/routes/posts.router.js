@@ -55,4 +55,21 @@ postRouter.post('/', checkAuthenticated, upload, async (req, res, next) => {
     }
 });
 
-module.exports = postRouter;
+postRouter.get('/:id/edit', checkPostOwnerShip, (req, res) => {
+    res.render('posts/edit', { post: req.post });
+})
+
+postRouter.put('/:id', checkPostOwnerShip, async (req, res) => {
+    try{
+        await Post.findByIdAndUpdate(req.params.id, req.body);
+        req.flash('success', '게시물 수정 완료');
+        res.redirect('/posts');
+
+    }catch(err){
+        console.log(err);
+        req.flash('error', '게시물 수정 오류 발생');
+        res.redirect('/posts');
+    }
+})
+
+module.exports = postRouter;    

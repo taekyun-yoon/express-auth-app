@@ -72,4 +72,16 @@ postRouter.put('/:id', checkPostOwnerShip, async (req, res) => {
     }
 })
 
+postRouter.delete('/:id', checkPostOwnerShip, async(req, res) => {
+    try{
+        await Post.findByIdAndDelete(req.params.id);
+        req.flash('success', '게시물 삭제 완료');
+        res.redirect('/posts');
+    }catch(err){
+        console.log(err);
+        req.flash('error', '게시물 삭제 오류 발생');
+        res.redirect('/posts');
+    }
+})
+
 module.exports = postRouter;    

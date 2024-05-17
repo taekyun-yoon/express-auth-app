@@ -59,24 +59,16 @@
         <hr class="mb-1">
         <div class="d-flex justify-content-between ">
             <div class="row">
-                <form action="/posts/<%=post._id%>/like?_method=PUT" method="POST">
-                    <% if (post.likes.find(event=> event === currentUser._id.toString())){ %>
-                    <button type="submit" class="no-outline" type="button">
-                        <img src="/assets/images/like-1.png" height="20px"><span class="ms-1">
-                            <%=post.likes.length %>
-                        </span>
-                    </button>
-                    <% } else{ %>
-                    <button type="submit" class="no-outline" type="button">
+                <button id="like-button-<%=post._id%>" class="no-outline" type="button" data-post-id="<%=post._id%>">
+                    <% if (post.likes.find(event => event === currentUser._id.toString())) { %>
+                        <img src="/assets/images/like-1.png" height="20px">
+                    <% } else { %>
                         <img src="/assets/images/like.png" height="20px">
-                        <span class="ms-1">
-                            <%=post.likes.length %>
-                        </span>
-                    </button>
                     <% } %>
-                </form>
+                    <span class="ms-1" id="like-count-<%=post._id%>"><%=post.likes.length %></span>
+                </button>
             </div>
-
+        
             <a class="ms-auto pe-2" data-bs-toggle="collapse" href="#post<%=post._id %>">
                 댓글 <%=post.comments.length %>
             </a>
@@ -137,4 +129,43 @@
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('[id^="like-button-"]').forEach(button => {
+            button.addEventListener('click', async function() {
+                const postId = this.getAttribute('data-post-id');
+                try {
+                    const response = await fetch(`/posts/${postId}/like`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+    
+                    if (response.ok) {
+                        const data = await response.json();
+                        if (data.success) {
+                            const likeCountElement = document.getElementById(`like-count-${postId}`);
+                            likeCountElement.innerText = data.likesCount;
+    
+                            const likeButtonImage = this.querySelector('img');
+                            if (data.liked) {
+                                likeButtonImage.src = '/assets/images/like-1.png';
+                            } else {
+                                likeButtonImage.src = '/assets/images/like.png';
+                            }
+                        } else {
+                            alert('좋아요 업데이트 중 에러가 발생하였습니다.');
+                        }
+                    } else {
+                        alert('서버와의 통신 중 에러가 발생하였습니다.');
+                    }
+                } catch (error) {
+                    console.error('좋아요 업데이트 중 에러가 발생하였습니다.', error);
+                    alert('좋아요 업데이트 중 에러가 발생하였습니다.');
+                }
+            });
+        });
+    });
+    </script>
 

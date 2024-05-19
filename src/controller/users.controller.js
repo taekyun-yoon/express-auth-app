@@ -35,11 +35,12 @@ async function postSignUpUser(req, res, next) {
 
 function postLogOutUser(req, res, next) {
     req.logout(function(err) {
-        if(err) {
+        if (err) {
             return next(err);
         }
+        req.session = null; // 세션 쿠키 제거
         res.redirect('/login');
-    })
+    });
 }
 
 async function validateEmail(req, res, next) {

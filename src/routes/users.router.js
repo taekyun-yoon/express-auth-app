@@ -5,7 +5,7 @@ const { postLoginUser, postSignUpUser, postLogOutUser } = require('../controller
 
 usersRouter.post('/login', postLoginUser);
 usersRouter.post('/signup', postSignUpUser);
-usersRouter.post('/logout', postLogOutUser);
+usersRouter.get('/logout', postLogOutUser);
 
 usersRouter.get('/google', passport.authenticate('google'));
 usersRouter.get('/google/callback', passport.authenticate('google', {

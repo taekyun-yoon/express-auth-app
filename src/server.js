@@ -16,7 +16,7 @@ const postRouter = require('./routes/posts.router');
 const commentsRouter = require('./routes/comments.router');
 // const profilesRouter = require('./routes/profiles.router');
 const likRouter = require('./routes/likes.router');
-// const friendsRouter = require('./routes/friends.router');
+const friendsRouter = require('./routes/friends.router');
 
 const serverConfig = config.get('server');
 const cookieConfig = config.get('cookie');
@@ -134,7 +134,7 @@ app.use('/auth', usersRouter);
 app.use('/posts', postRouter);
 app.use('/posts/:id/comments', commentsRouter);
 // app.use("/profile/:id", profilesRouter);
-// app.use("/friends", friendsRouter);
+app.use("/friends", friendsRouter);
 app.use('/posts/:id/like', likRouter);
 
 app.use((err, req, res, next) => {
